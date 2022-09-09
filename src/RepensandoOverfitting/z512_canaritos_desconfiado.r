@@ -6,7 +6,7 @@ require("data.table")
 require("rpart")
 require("rpart.plot")
 
-setwd("." )  #establezco la carpeta donde voy a trabajar
+setwd("C:\\Users\\Administrator\\Desktop\\Maestria\\EyF\\")  #establezco la carpeta donde voy a trabajar
 #cargo el dataset
 dataset  <- fread( "./datasets/competencia1_2022.csv")
 
@@ -31,7 +31,7 @@ for( i in 13:100 ) dataset[ , paste0("canarito", i ) :=  runif( nrow(dataset)) ]
                  maxdepth= 10)
 
 
-pdf(file = "./work/arbol_canaritos_desconfiado.pdf", width=28, height=4)
+pdf(file = "./exp/work/arbol_canaritos_desconfiado.pdf", width=28, height=4)
 prp(modelo, extra=101, digits=5, branch=1, type=4, varlen=0, faclen=0)
 dev.off()
 
