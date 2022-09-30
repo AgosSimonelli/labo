@@ -43,9 +43,9 @@ hs <- makeParamSet(
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM  <- list()
 
-PARAM$experimento  <- "HT7231"
+PARAM$experimento  <- "HT7231_006_FE"
 
-PARAM$input$dataset       <- "./datasets/competencia2_2022.csv.gz"
+PARAM$input$dataset       <- "./datasets/dataset_competencia2_FE4.csv"
 PARAM$input$training      <- c( 202103 )
 
 PARAM$trainingstrategy$undersampling  <-  1.0   # un undersampling de 0.1  toma solo el 10% de los CONTINUA
@@ -189,13 +189,10 @@ EstimarGanancia_lightgbm  <- function( x )
 #Aqui empieza el programa
 
 #Aqui se debe poner la carpeta de la computadora local
-#setwd("~/buckets/b1/")   #Establezco el Working Directory
-setwd("C:\\Users\\Administrator\\Desktop\\Maestria\\EyF\\")
+setwd("~/buckets/b1/")   #Establezco el Working Directory
 
 #cargo el dataset donde voy a entrenar el modelo
 dataset  <- fread( PARAM$input$dataset )
-
-
 
 #creo la carpeta donde va el experimento
 # HT  representa  Hiperparameter Tuning
@@ -274,12 +271,4 @@ if( !file.exists( kbayesiana ) ) {
 
 
 quit( save="no" )
-
-#Salida:
-#[mbo] 100: learning_rate=0.0248; feature_fraction=0.852; min_data_in_leaf=444; num_leaves=392; envios=8529 : y = 2.7e+07 : 344.4 secs : infill_ei
-#Saved the final state in the file HT7231.RDATA
-#Saved the final state in the file HT7231.RDATA
-#Revisando el archivo veo que está mal tomar esos valores de HP porque no son los de mayor gcia, son los ultimos que arrojó.
-#Los mejores HP son:
-#ganancia:27660000 -   num_leaves: 231 - min_data_in_leaf: 253 - feature_fraction = 0.458919119814546 - learning_rate= 0.0299531623465885
 

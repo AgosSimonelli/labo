@@ -47,7 +47,7 @@ PARAM  <- list()
 
 PARAM$experimento  <- "HT7231_003"
 
-PARAM$input$dataset       <- "./datasets/dataset_competencia2_modificado.csv.gz"
+PARAM$input$dataset       <- "./datasets/competencia2_2022.csv.gz"
 PARAM$input$training      <- c( 202103 )
 
 PARAM$trainingstrategy$undersampling  <-  1.0   # un undersampling de 0.1  toma solo el 10% de los CONTINUA
@@ -274,6 +274,10 @@ if( !file.exists( kbayesiana ) ) {
   run  <- mboContinue( kbayesiana )   #retomo en caso que ya exista
 }
 
+
+funcion_optimizar
+
+surr.km
 
 #quit( save="no" )
 
