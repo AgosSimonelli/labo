@@ -32,12 +32,10 @@ options(error = function() {
 
 #Aqui se cargan los hiperparametros
 hs <- makeParamSet( 
-         makeNumericParam("learning_rate",    lower=    0.001, upper=    0.5),
-         makeNumericParam("feature_fraction", lower=    0.4  , upper=    1.0),
-         makeIntegerParam("lambda_l1",        lower=    0.0  , upper= 100),
-         makeIntegerParam("lambda_l2",        lower=    0.0  , upper= 100),
-         makeIntegerParam("min_data_in_leaf", lower=    0L   , upper=  8000L),
-         makeIntegerParam("num_leaves",       lower=   16L   , upper=  2024L),
+         makeNumericParam("learning_rate",    lower=    0.005, upper=    0.5),
+         makeNumericParam("feature_fraction", lower=    0.1  , upper=    1.0),
+         makeIntegerParam("min_data_in_leaf", lower=    0L   , upper=  10000L),
+         makeIntegerParam("num_leaves",       lower=   16L   , upper=  3024L),
          makeIntegerParam("envios",           lower= 7000L   , upper= 12000L)
         )
 
@@ -45,15 +43,15 @@ hs <- makeParamSet(
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM  <- list()
 
-PARAM$experimento  <- "HT7231_009_FE_VM"
+PARAM$experimento  <- "HT7231_010_VM"
 
-PARAM$input$dataset       <- "./datasets/dataset_competencia2_FE.csv"
+PARAM$input$dataset       <- "./datasets/dataset_competencia2_FE7.csv"
 PARAM$input$training      <- c( 202103 )
 
 PARAM$trainingstrategy$undersampling  <-  1.0   # un undersampling de 0.1  toma solo el 10% de los CONTINUA
 PARAM$trainingstrategy$semilla_azar   <- 238001  #Aqui poner la propia semilla
 
-PARAM$hyperparametertuning$iteraciones <- 400
+PARAM$hyperparametertuning$iteraciones <- 200
 PARAM$hyperparametertuning$xval_folds  <- 5
 PARAM$hyperparametertuning$POS_ganancia  <- 78000
 PARAM$hyperparametertuning$NEG_ganancia  <- -2000
@@ -128,8 +126,8 @@ EstimarGanancia_lightgbm  <- function( x )
                           verbosity= -100,
                           max_depth=  -1,         # -1 significa no limitar,  por ahora lo dejo fijo
                           min_gain_to_split= 0.0, #por ahora, lo dejo fijo
-                          #lambda_l1= 0.0,         #por ahora, lo dejo fijo
-                          #lambda_l2= 0.0,         #por ahora, lo dejo fijo
+                          lambda_l1= 0.0,         #por ahora, lo dejo fijo
+                          lambda_l2= 0.0,         #por ahora, lo dejo fijo
                           max_bin= 31,            #por ahora, lo dejo fijo
                           num_iterations= 9999,   #un numero muy grande, lo limita early_stopping_rounds
                           force_row_wise= TRUE,   #para que los alumnos no se atemoricen con tantos warning
@@ -191,7 +189,7 @@ EstimarGanancia_lightgbm  <- function( x )
 #Aqui empieza el programa
 
 #Aqui se debe poner la carpeta de la computadora local
-setwd("~/buckets/b1/")    #Establezco el Working Directory
+setwd("~/buckets/b1/")   #Establezco el Working Directory
 
 #cargo el dataset donde voy a entrenar el modelo
 dataset  <- fread( PARAM$input$dataset )
