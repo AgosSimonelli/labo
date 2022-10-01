@@ -32,11 +32,11 @@ options(error = function() {
 
 #Aqui se cargan los hiperparametros
 hs <- makeParamSet( 
-         makeNumericParam("learning_rate",    lower=    0.005, upper=    0.5),
-         makeNumericParam("feature_fraction", lower=    0.1  , upper=    1.0),
-         makeIntegerParam("min_data_in_leaf", lower=    0L   , upper=  10000L),
+         makeNumericParam("learning_rate",    lower=    0.005, upper=    0.3),
+         makeNumericParam("feature_fraction", lower=    0.2  , upper=    1.0),
+         makeIntegerParam("min_data_in_leaf", lower=    0L   , upper=  8000L),
          makeIntegerParam("num_leaves",       lower=   16L   , upper=  3024L),
-         makeIntegerParam("envios",           lower= 7000L   , upper= 12000L)
+         makeIntegerParam("envios",           lower= 8000L   , upper= 11000L)
         )
 
 #defino los parametros de la corrida, en una lista, la variable global  PARAM
