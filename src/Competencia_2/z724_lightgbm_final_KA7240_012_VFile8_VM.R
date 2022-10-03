@@ -13,26 +13,28 @@ require("data.table")
 require("lightgbm")
 
 #los HP de este scrip son los obtenidos de la OB del script:
-#z723_lightgbm_binaria_BO_enVM_KA7240_013_FileV08.R
-#Que corrio en la VM - salida en:  HT7231_010_VM - Lo hago con los mejores de la it. 208 (3era en la OB)
+#z723_lightgbm_binaria_BO_enVM_KA7240_011_FileV08.R
+#Que corrio en la VM - salida en:  KA7240__011 -
+#Pruebo los 2dos mejors HP (iteracion  126)
+
 #defino los parametros de la corrida, en una lista, la variable global  PARAM
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM <- list()
-PARAM$experimento  <- "KA7240_013_Vfile8_OB_VM"
+PARAM$experimento  <- "KA7240_012_Vfile8_OB_VM"
 
 PARAM$input$dataset       <- "./datasets/dataset_competencia2_FE8.csv"
 PARAM$input$training      <- c( 202103 )
 PARAM$input$future        <- c( 202105 )
 
 PARAM$finalmodel$max_bin           <-     31
-PARAM$finalmodel$learning_rate     <-     0.00505378655353722   #0.0142501265
-PARAM$finalmodel$num_iterations    <-    1501  #615
-PARAM$finalmodel$num_leaves        <-   1170  #784
-PARAM$finalmodel$min_data_in_leaf  <-   81  #5628
+PARAM$finalmodel$learning_rate     <-     0.0127615823364268   #0.0142501265
+PARAM$finalmodel$num_iterations    <-    285  #615
+PARAM$finalmodel$num_leaves        <-   2621  #784
+PARAM$finalmodel$min_data_in_leaf  <-   905  #5628
 #PARAM$finalmodel$lambda_l1        <-  1
 #PARAM$finalmodel$lambda_l2        <- 4
-PARAM$finalmodel$feature_fraction  <-      0.469616433440474  #0.8382482539
-PARAM$finalmodel$semilla           <- 257687
+PARAM$finalmodel$feature_fraction  <-      0.501527274891641  #0.8382482539
+PARAM$finalmodel$semilla           <- 238001
 
 
 #------------------------------------------------------------------------------

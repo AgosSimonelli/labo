@@ -9,8 +9,6 @@
 # 5-fold cross validation
 # la probabilidad de corte es un hiperparametro
 
-#Pruebo con otra semilla (257687) en esta OB y le agrego iteraciones 
-
 #limpio la memoria
 rm( list=ls() )  #remove all objects
 gc()             #garbage collection
@@ -36,8 +34,8 @@ options(error = function() {
 hs <- makeParamSet( 
          makeNumericParam("learning_rate",    lower=    0.005, upper=    0.3),
          makeNumericParam("feature_fraction", lower=    0.2  , upper=    1.0),
-         makeIntegerParam("min_data_in_leaf", lower=    0L   , upper=  4000L),
-         makeIntegerParam("num_leaves",       lower=   700L   , upper=  5024L),
+         makeIntegerParam("min_data_in_leaf", lower=    0L   , upper=  8000L),
+         makeIntegerParam("num_leaves",       lower=   16L   , upper=  3024L),
          makeIntegerParam("envios",           lower= 8000L   , upper= 11000L)
         )
 
@@ -45,20 +43,20 @@ hs <- makeParamSet(
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM  <- list()
 
-PARAM$experimento  <- "HT7231_013_VM"
+PARAM$experimento  <- "HT7231_011_VM"
 
 PARAM$input$dataset       <- "./datasets/dataset_competencia2_FE8.csv"
 PARAM$input$training      <- c( 202103 )
 
 PARAM$trainingstrategy$undersampling  <-  1.0   # un undersampling de 0.1  toma solo el 10% de los CONTINUA
-PARAM$trainingstrategy$semilla_azar   <- 257687  #Aqui poner la propia semilla
+PARAM$trainingstrategy$semilla_azar   <- 238001  #Aqui poner la propia semilla
 
-PARAM$hyperparametertuning$iteraciones <- 400
+PARAM$hyperparametertuning$iteraciones <- 200
 PARAM$hyperparametertuning$xval_folds  <- 5
 PARAM$hyperparametertuning$POS_ganancia  <- 78000
 PARAM$hyperparametertuning$NEG_ganancia  <- -2000
 
-PARAM$hyperparametertuning$semilla_azar  <- 257687  #Aqui poner la propia semilla, PUEDE ser distinta a la de trainingstrategy
+PARAM$hyperparametertuning$semilla_azar  <- 238001  #Aqui poner la propia semilla, PUEDE ser distinta a la de trainingstrategy
 
 #------------------------------------------------------------------------------
 #graba a un archivo los componentes de lista
