@@ -19,7 +19,7 @@ require("lightgbm")
 
 #Parametros del script
 PARAM  <- list()
-PARAM$experimento <- "FE9250_EXP_CC_03"
+PARAM$experimento <- "FE9250_EXP_SC"
 
 PARAM$exp_input  <- "DR9141"
 
@@ -27,7 +27,7 @@ PARAM$lag1  <- TRUE
 PARAM$lag2  <- TRUE
 PARAM$Tendencias  <- TRUE
 PARAM$RandomForest  <- FALSE          #No se puede poner en TRUE para la entrega oficial de la Tercera Competencia
-PARAM$CanaritosAsesinos  <- TRUE
+PARAM$CanaritosAsesinos  <- FALSE
 # FIN Parametros del script
 
 #------------------------------------------------------------------------------
@@ -233,79 +233,78 @@ fganancia_lgbm_meseta  <- function(probs, datos)
 #Elimina del dataset las variables que estan por debajo de la capa geologica de canaritos
 #se llama varias veces, luego de agregar muchas variables nuevas, para ir reduciendo la cantidad de variables
 # y así hacer lugar a nuevas variables importantes
-
-GVEZ <- 1
-
-CanaritosAsesinos  <- function( canaritos_ratio=0.3 )
-{
-  gc()
-  dataset[ , clase01:= ifelse( clase_ternaria=="CONTINUA", 0, 1 ) ]
-
-  for( i  in 1:(ncol(dataset)*canaritos_ratio))  dataset[ , paste0("canarito", i ) :=  runif( nrow(dataset))]
-
-  campos_buenos  <- setdiff( colnames(dataset), c("clase_ternaria","clase01", "foto_mes" ) )
-
-  azar  <- runif( nrow(dataset) )
-  dataset[ , entrenamiento := foto_mes>= 202101 &  foto_mes<= 202103  & ( clase01==1 | azar < 0.10 ) ]
-
-  dtrain  <- lgb.Dataset( data=    data.matrix(  dataset[ entrenamiento==TRUE, campos_buenos, with=FALSE]),
-                          label=   dataset[ entrenamiento==TRUE, clase01],
-                          weight=  dataset[ entrenamiento==TRUE, ifelse(clase_ternaria=="BAJA+2", 1.0000001, 1.0)],
-                          free_raw_data= FALSE
-                        )
-
-  dvalid  <- lgb.Dataset( data=    data.matrix(  dataset[ foto_mes==202105, campos_buenos, with=FALSE]),
-                          label=   dataset[ foto_mes==202105, clase01],
-                          weight=  dataset[ foto_mes==202105, ifelse(clase_ternaria=="BAJA+2", 1.0000001, 1.0)],
-                          free_raw_data= FALSE
-                          )
-
-
-  param <- list( objective= "binary",
-                 metric= "custom",
-                 first_metric_only= TRUE,
-                 boost_from_average= TRUE,
-                 feature_pre_filter= FALSE,
-                 verbosity= -100,
-                 seed= 999983,
-                 max_depth=  -1,         # -1 significa no limitar,  por ahora lo dejo fijo
-                 min_gain_to_split= 0.0, #por ahora, lo dejo fijo
-                 lambda_l1= 0.0,         #por ahora, lo dejo fijo
-                 lambda_l2= 0.0,         #por ahora, lo dejo fijo
-                 max_bin= 31,            #por ahora, lo dejo fijo
-                 num_iterations= 9999,   #un numero muy grande, lo limita early_stopping_rounds
-                 force_row_wise= TRUE,    #para que los alumnos no se atemoricen con tantos warning
-                 learning_rate= 0.065,
-                 feature_fraction= 1.0,   #lo seteo en 1 para que las primeras variables del dataset no se vean opacadas
-                 min_data_in_leaf= 260,
-                 num_leaves= 60,
-                 early_stopping_rounds= 200 )
-
-  modelo  <- lgb.train( data= dtrain,
-                        valids= list( valid= dvalid ),
-                        eval= fganancia_lgbm_meseta,
-                        param= param,
-                        verbose= -100 )
-
-  tb_importancia  <- lgb.importance( model= modelo )
-  tb_importancia[  , pos := .I ]
-
-  fwrite( tb_importancia,
-          file= paste0( "impo_", GVEZ ,".txt"),
-          sep= "\t" )
-
-  GVEZ  <<- GVEZ + 1
-
-  umbral  <- tb_importancia[ Feature %like% "canarito", median(pos) + 2*sd(pos) ]  #Atencion corto en la mediana mas DOS desvios!!
-
-  col_utiles  <- tb_importancia[ pos < umbral & !( Feature %like% "canarito"),  Feature ]
-  col_utiles  <-  unique( c( col_utiles,  c("numero_de_cliente","foto_mes","clase_ternaria","mes") ) )
-  col_inutiles  <- setdiff( colnames(dataset), col_utiles )
-
-  dataset[  ,  (col_inutiles) := NULL ]
-
-}
-
+# 
+# GVEZ <- 1 
+# 
+# CanaritosAsesinos  <- function( canaritos_ratio=0.2 )
+# {
+#   gc()
+#   dataset[ , clase01:= ifelse( clase_ternaria=="CONTINUA", 0, 1 ) ]
+# 
+#   for( i  in 1:(ncol(dataset)*canaritos_ratio))  dataset[ , paste0("canarito", i ) :=  runif( nrow(dataset))]
+# 
+#   campos_buenos  <- setdiff( colnames(dataset), c("clase_ternaria","clase01", "foto_mes" ) )
+# 
+#   azar  <- runif( nrow(dataset) )
+#   dataset[ , entrenamiento := foto_mes>= 202101 &  foto_mes<= 202103  & ( clase01==1 | azar < 0.10 ) ]
+# 
+#   dtrain  <- lgb.Dataset( data=    data.matrix(  dataset[ entrenamiento==TRUE, campos_buenos, with=FALSE]),
+#                           label=   dataset[ entrenamiento==TRUE, clase01],
+#                           weight=  dataset[ entrenamiento==TRUE, ifelse(clase_ternaria=="BAJA+2", 1.0000001, 1.0)],
+#                           free_raw_data= FALSE
+#                         )
+# 
+#   dvalid  <- lgb.Dataset( data=    data.matrix(  dataset[ foto_mes==202105, campos_buenos, with=FALSE]),
+#                           label=   dataset[ foto_mes==202105, clase01],
+#                           weight=  dataset[ foto_mes==202105, ifelse(clase_ternaria=="BAJA+2", 1.0000001, 1.0)],
+#                           free_raw_data= FALSE
+#                           )
+# 
+# 
+#   param <- list( objective= "binary",
+#                  metric= "custom",
+#                  first_metric_only= TRUE,
+#                  boost_from_average= TRUE,
+#                  feature_pre_filter= FALSE,
+#                  verbosity= -100,
+#                  seed= 999983,
+#                  max_depth=  -1,         # -1 significa no limitar,  por ahora lo dejo fijo
+#                  min_gain_to_split= 0.0, #por ahora, lo dejo fijo
+#                  lambda_l1= 0.0,         #por ahora, lo dejo fijo
+#                  lambda_l2= 0.0,         #por ahora, lo dejo fijo
+#                  max_bin= 31,            #por ahora, lo dejo fijo
+#                  num_iterations= 9999,   #un numero muy grande, lo limita early_stopping_rounds
+#                  force_row_wise= TRUE,    #para que los alumnos no se atemoricen con tantos warning
+#                  learning_rate= 0.065, 
+#                  feature_fraction= 1.0,   #lo seteo en 1 para que las primeras variables del dataset no se vean opacadas
+#                  min_data_in_leaf= 260,
+#                  num_leaves= 60,
+#                  early_stopping_rounds= 200 )
+# 
+#   modelo  <- lgb.train( data= dtrain,
+#                         valids= list( valid= dvalid ),
+#                         eval= fganancia_lgbm_meseta,
+#                         param= param,
+#                         verbose= -100 )
+# 
+#   tb_importancia  <- lgb.importance( model= modelo )
+#   tb_importancia[  , pos := .I ]
+# 
+#   fwrite( tb_importancia, 
+#           file= paste0( "impo_", GVEZ ,".txt"),
+#           sep= "\t" )
+# 
+#   GVEZ  <<- GVEZ + 1
+# 
+#   umbral  <- tb_importancia[ Feature %like% "canarito", median(pos) + 2*sd(pos) ]  #Atencion corto en la mediana mas DOS desvios!!
+# 
+#   col_utiles  <- tb_importancia[ pos < umbral & !( Feature %like% "canarito"),  Feature ]
+#   col_utiles  <-  unique( c( col_utiles,  c("numero_de_cliente","foto_mes","clase_ternaria","mes") ) )
+#   col_inutiles  <- setdiff( colnames(dataset), col_utiles )
+# 
+#   dataset[  ,  (col_inutiles) := NULL ]
+# 
+# }
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 #Aqui empieza el programa
@@ -399,12 +398,12 @@ if( PARAM$Tendencias )
 #Elimino las variables que no son tan importantes en el dataset
 # with great power comes grest responsability
 
-if( PARAM$CanaritosAsesinos )
-{
-  ncol( dataset )
-  CanaritosAsesinos( canaritos_ratio = 0.3 )
-  ncol( dataset )
-}
+# if( PARAM$CanaritosAsesinos )
+# {
+#   ncol( dataset )
+#   CanaritosAsesinos( canaritos_ratio = 0.3 )
+#   ncol( dataset )
+# }
 
 #------------------------------------------------------------------------------
 #grabo el dataset
