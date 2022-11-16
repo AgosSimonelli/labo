@@ -14,8 +14,8 @@ require("lightgbm")
 
 #Parametros del script
 PARAM  <- list()
-PARAM$experimento  <- "ZZ9420_C4_CC_09_A"
-PARAM$exp_input  <- "HT9420_C4_CC_09"
+PARAM$experimento  <- "ZZ9420_C4_SC"
+PARAM$exp_input  <- "HT9420_C4_SC"
 
 PARAM$modelos  <- 2
 # FIN Parametros del script
@@ -154,7 +154,7 @@ for( i in  1:PARAM$modelos )
   
   
   #genero los archivos para Kaggle
-  cortes  <- seq( from=  10000,
+  cortes  <- seq( from=  6000,
                   to=   14000,
                   by=     500 )
   
