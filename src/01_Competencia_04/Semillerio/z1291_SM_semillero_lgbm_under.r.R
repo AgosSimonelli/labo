@@ -17,8 +17,8 @@ require("primes")
 
 #Parametros del script
 PARAM <- list()
-PARAM$experimento <- "ZZ9410_semillerio"
-PARAM$exp_input <- "HT9410_semillerio"
+PARAM$experimento <- "ZZ9410_CC_09_semillerio"
+PARAM$exp_input <- "HT9420_CC_09"
 
 # PARAM$modelos  <- 2
 PARAM$modelo <- 1 # se usa el mejor de la OB, pero a futuro podria variar esto
@@ -46,24 +46,24 @@ options(error = function() {
 base_dir <- "~/buckets/b1/"
 
 #creo la carpeta donde va el experimento
-dir.create( paste0( base_dir, "exp/", PARAM$experimento, "/"), showWarnings = FALSE )
-setwd(paste0( base_dir, "exp/", PARAM$experimento, "/"))   #Establezco el Working Directory DEL EXPERIMENTO
+dir.create( paste0( base_dir, "exp/Competencia_Final/", PARAM$experimento, "/"), showWarnings = FALSE )
+setwd(paste0( base_dir, "exp/Competencia_Final/", PARAM$experimento, "/"))   #Establezco el Working Directory DEL EXPERIMENTO
 
 #leo la salida de la optimizaciob bayesiana
-arch_log  <- paste0( base_dir, "exp/", PARAM$exp_input, "/BO_log.txt" )
+arch_log  <- paste0( base_dir, "exp/Competencia_Final/", PARAM$exp_input, "/BO_log.txt" )
 tb_log  <- fread( arch_log )
 setorder( tb_log, -ganancia )
 
 #leo el nombre del expermento de la Training Strategy
-arch_TS  <- paste0( base_dir, "exp/", PARAM$exp_input, "/TrainingStrategy.txt" )
+arch_TS  <- paste0( base_dir, "exp/Competencia_Final/", PARAM$exp_input, "/TrainingStrategy.txt" )
 TS  <- readLines( arch_TS, warn=FALSE )
 
 #leo el dataset donde voy a entrenar el modelo final
-arch_dataset  <- paste0( base_dir, "exp/", TS, "/dataset_train_final.csv.gz" )
+arch_dataset  <- paste0( base_dir, "exp/Competencia_Final/", TS, "/dataset_train_final.csv.gz" )
 dataset  <- fread( arch_dataset )
 
 #leo el dataset donde voy a aplicar el modelo final
-arch_future  <- paste0( base_dir, "exp/", TS, "/dataset_future.csv.gz" )
+arch_future  <- paste0( base_dir, "exp/Competencia_Final/", TS, "/dataset_future.csv.gz" )
 dfuture <- fread( arch_future )
 
 
