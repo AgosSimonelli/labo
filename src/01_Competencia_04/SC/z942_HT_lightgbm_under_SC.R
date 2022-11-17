@@ -330,7 +330,7 @@ setwd("~/buckets/b1/")
 
 #cargo el dataset donde voy a entrenar
 #esta en la carpeta del exp_input y siempre se llama  dataset_training.csv.gz
-dataset_input  <- paste0( "./exp/C4/", PARAM$exp_input, "/dataset_training.csv.gz" )
+dataset_input  <- paste0( "./exp/Competencia_Final/", PARAM$exp_input, "/dataset_training.csv.gz" )
 dataset  <- fread( dataset_input )
 
 #Verificaciones
@@ -340,8 +340,8 @@ if( ! ("fold_test"     %in% colnames(dataset) ) ) stop("Error, el dataset no tie
 if( dataset[ fold_train==1, .N ] == 0 ) stop("Error, en el dataset no hay fold_train==1 \n")
 
 #creo la carpeta donde va el experimento
-dir.create( paste0( "./exp/C4/", PARAM$experimento, "/"), showWarnings = FALSE )
-setwd(paste0( "./exp/C4/", PARAM$experimento, "/"))   #Establezco el Working Directory DEL EXPERIMENTO
+dir.create( paste0( "./exp/Competencia_Final/", PARAM$experimento, "/"), showWarnings = FALSE )
+setwd(paste0( "./exp/Competencia_Final/", PARAM$experimento, "/"))   #Establezco el Working Directory DEL EXPERIMENTO
 
 
 cat( PARAM$exp_input,
