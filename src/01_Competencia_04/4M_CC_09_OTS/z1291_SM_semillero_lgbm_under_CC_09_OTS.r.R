@@ -17,13 +17,13 @@ require("primes")
 
 #Parametros del script
 PARAM <- list()
-PARAM$experimento <- "ZZ9410_C4_CC09_OTS"
+PARAM$experimento <- "V2_ZZ9410_C4_CC09_OTS"
 PARAM$exp_input <- "HT9420_C4_CC09_OTS"
 
 # PARAM$modelos  <- 2
 PARAM$modelo <- 1 # se usa el mejor de la OB, pero a futuro podria variar esto
 PARAM$semilla_primos <- 238001
-PARAM$semillerio <- 40 # ¿De cuanto será nuestro semillerio?
+PARAM$semillerio <- 60 # ¿De cuanto será nuestro semillerio?
 PARAM$indice_inicio_semilla <- 1
 PARAM$indice_fin_semilla <- 20
 # FIN Parametros del script
@@ -211,6 +211,5 @@ for( ksemilla in ksemillas[PARAM$indice_inicio_semilla:PARAM$indice_fin_semilla]
   rm( tb_prediccion )
   rm( modelo_final)
   rm( parametros )
-  rm( dtrain )
   gc()
 }
