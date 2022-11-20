@@ -32,7 +32,7 @@ base_dir <- "~/buckets/b1/"
 dir.create(paste0(base_dir, "exp/Competencia_Final/", PARAM$experimento, "/"), showWarnings = FALSE)
 setwd(paste0(base_dir, "exp/Competencia_Final/", PARAM$experimento, "/")) # Establezco el Working Directory DEL EXPERIMENTO
 
-path_experimento_semillerio <- paste0(base_dir, "exp/", PARAM$exp_input)
+path_experimento_semillerio <- paste0(base_dir, "exp/Competencia_Final/", PARAM$exp_input)
 archivos <- list.files(path = path_experimento_semillerio, pattern = "_resultados.csv")
 
 # Esto es MUY dependiente del formato del nombre de los experimentos z992, se puede romper muy facil
