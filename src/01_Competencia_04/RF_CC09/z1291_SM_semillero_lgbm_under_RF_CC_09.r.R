@@ -17,15 +17,15 @@ require("primes")
 
 #Parametros del script
 PARAM <- list()
-PARAM$experimento <- "ZZ9410_C4_CC_09_semillerio"
-PARAM$exp_input <- "HT9420_C4_CC_09"
+PARAM$experimento <- "ZZ9410_RF_CC09_semillerio"
+PARAM$exp_input <- "HT9420_RF_CC09"
 
 # PARAM$modelos  <- 2
 PARAM$modelo <- 1 # se usa el mejor de la OB, pero a futuro podria variar esto
 PARAM$semilla_primos <- 238001
-PARAM$semillerio <- 50 # ¿De cuanto será nuestro semillerio?
+PARAM$semillerio <- 40 # ¿De cuanto será nuestro semillerio?
 PARAM$indice_inicio_semilla <- 1
-PARAM$indice_fin_semilla <- 20
+PARAM$indice_fin_semilla <- 10
 # FIN Parametros del script
 
 # genero un vector de una cantidad de PARAM$semillerio  de semillas,  buscando numeros primos al azar
