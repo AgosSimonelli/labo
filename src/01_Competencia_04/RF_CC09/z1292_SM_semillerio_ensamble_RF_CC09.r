@@ -7,17 +7,17 @@ require("data.table")
 # Parametros del script
 PARAM <- list()
 PARAM$experimento <- "ZZ1292_semillerio_kaggle_RF_CC09"
-PARAM$exp_input <- "ZZ9410_RF_CC09_semillerio"
+PARAM$exp_input <- "ZZ9410_semillerio_ensamble_RF_CC09"
 
 # Genera los csv de los experimentos de cada semilla
 # Es posible que no se desee activar porque va a crear muchos csv que posiblemente no se utilicen
-PARAM$generar_salidas_individuales <- TRUE
+PARAM$generar_salidas_individuales <- FALSE
 
 # Decide si para finalizar la predicción usa el ranking o se queda con las probabilidades
 PARAM$use_rank_final <- TRUE
 
 # cantidad de envios
-PARAM$corte <- 11000
+PARAM$corte <- 10500
 # FIN Parametros del script
 
 options(error = function() {
@@ -39,7 +39,7 @@ archivos <- list.files(path = path_experimento_semillerio, pattern = "_resultado
 ksemillas <- lapply(strsplit(archivos, "_"), function(partes_nombre_archivo) {
   # 1      2          3        4  5   6   7      8
   # ZZ9410_semillerio_ensamble_M1_S61_S80_683257_resultados.csv
-  return(partes_nombre_archivo[5]) # la posicion de la semilla en el nombre es 7
+  return(partes_nombre_archivo[9]) # la posicion de la semilla en el nombre es 7
 })
 
 # Levantar dataset C4
@@ -55,7 +55,7 @@ tb_ranking_semillerio <- data.table(numero_de_cliente = dataset_septiembre[, num
 
 for (archivo in archivos) {
   
-  ksemilla <- strtoi(sapply(strsplit(archivo, "_"), "[", 3))
+  ksemilla <- strtoi(strsplit(archivo, "_")[[1]][7])
   
   # cols: numero_de_cliente,foto_mes,prob,rank
   tb_prediccion <- fread(paste0(path_experimento_semillerio, "/", archivo))
